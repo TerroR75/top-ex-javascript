@@ -1,4 +1,4 @@
-# TOP Exercises - Linked List
+# TOP Exercises - JS
 
 ## Authors
 
