@@ -8,14 +8,39 @@ class Node {
 
 class BinaryTree {
     constructor(array) {
-        this.sortedArray = mergeSort(array);
-        this.root = new Node(this.sortedArray[Math.floor(this.sortedArray.length / 2)]);
+        this.sortedArray = [...removeDuplicates(mergeSort(array))];
+        this.root = this.buildTree(this.sortedArray, 0, this.sortedArray.length - 1);
     }
 
-    buildTree() {
+    buildTree(array, start, end) {
+        if (start > end) {
+            return null;
+        }
 
+        let mid = Math.floor((start + end) / 2);
+        let root = new Node(array[mid]);
+
+        root.left = this.buildTree(array, start, mid - 1);
+        root.right = this.buildTree(array, mid + 1, end);
+
+        return root;
     }
 }
+
+
+const tree = new BinaryTree([5, 2, 7, 4, 1, 3, 8, 6, 9, 0]);
+
+
+
+
+// Instructions
+console.log('To check the tree instance itself, type: %ctree', 'color: yellow; background:black;')
+console.log('To visualize the binary tree, type: %cprettyPrint(tree.root)', 'color: yellow; background:black;')
+
+
+
+
+
 
 
 // ARRAY SORTING FUNCTIONS
@@ -56,4 +81,19 @@ function merge(leftArray, rightArray) {
     }
 
     return [...mergedArray, ...leftArray.slice(leftIndex), ...rightArray.slice(rightIndex)];
+}
+
+function removeDuplicates(array) {
+    return [...new Set(array)];
+}
+
+// PrettyPrint - visualize binary tree
+const prettyPrint = (node, prefix = '', isLeft = true) => {
+    if (node.right !== null) {
+        prettyPrint(node.right, `${prefix}${isLeft ? '│   ' : '    '}`, false);
+    }
+    console.log(`${prefix}${isLeft ? '└── ' : '┌── '}${node.data}`);
+    if (node.left !== null) {
+        prettyPrint(node.left, `${prefix}${isLeft ? '    ' : '│   '}`, true);
+    }
 }
